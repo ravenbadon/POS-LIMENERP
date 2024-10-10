@@ -1,0 +1,32 @@
+.controls-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .control-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .checkout-btn {
+    background-color: green;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .cancel-sale-btn {
+    background-color: red;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    opacity: 0.8;
+  }
+  

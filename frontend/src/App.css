@@ -1,0 +1,33 @@
+.center-wrapper {
+  display: grid;
+  place-items: center; /* Centers both horizontally and vertically */
+  min-height: 100vh; /* Full height to center vertically */
+  margin: 0 auto;
+}
+
+.main-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Full viewport height */
+  padding: 20px;
+}
+
+.header {
+  padding: 10px;
+  text-align: center;
+  background-color: #f8f9fa; /* Header section */
+}
+
+.controls {
+  flex: 0 1 auto;
+  padding: 10px;
+  background-color: #f1f1f1; /* Controls section */
+  margin-bottom: 20px;
+}
+
+/*.data-grid {
+  flex: 1 1 auto;
+  padding: 20px;
+  background-color: #ffffff; 
+}
+*/
