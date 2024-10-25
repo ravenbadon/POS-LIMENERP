@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import './newCart.css';
-import ProductSearch from './productSearch';
-import CartTable from './cartTable';
-import ActionButtons from './actionButtons';
-import CancelSaleConfirmation from './cancelSaleConfirmationForm'; // Make sure this import is correct
-import CheckoutForm from './checkOutForm';
+import ProductSearch from '../ProductSearch/productSearch.js';
+import CartTable from '../CartTable/cartTable.js';
+import ActionButtons from '../ActionButtons/actionButtons.js';
+import CancelSaleConfirmation from '../Forms/cancelSaleConfirmationForm.js'; // Make sure this import is correct
+import CheckoutForm from '../Forms/checkOutForm.js';
 
 
 const NewCart = ({ onDiscountClick }) => {

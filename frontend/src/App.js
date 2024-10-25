@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import './App.css';
-import TabNavigation from './tabNavigation';
-import NewCart from './newCart';
+import TabNavigation from './Components/TabNavigation/tabNavigation.js';
+import NewCart from './Components/NewCart/newCart.js';
 import CustomerPage from './customerPage';
-import DiscountForm from './discountForm';
+import DiscountForm from './Components/Forms/discountForm';
 
 function App() {
   const [activePage, setActivePage] = useState('checkout'); // Track active page
