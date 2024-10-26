@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './customer.css';
-import AddCustomerForm from './addNewCustomer'; // Form to add a new customer
+import AddCustomerForm from './addNewCustomer.js'; // Form to add a new customer
 
 const CustomerPage = () => {
   const [isAddCustomerFormOpen, setIsAddCustomerFormOpen] = useState(false);

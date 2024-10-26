@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import './App.css';
-import TabNavigation from './Components/TabNavigation/tabNavigation.js';
+import TabNavigation from './Components/TabNavigation/tabNavigation.js'; //renaming
 import NewCart from './Components/NewCart/newCart.js';
-import CustomerPage from './customerPage';
+import CustomerPage from './Components/Customer/customerPage.js';
 import DiscountForm from './Components/Forms/discountForm';
 
 function App() {

@@ -3,7 +3,7 @@ import './newCart.css';
 import ProductSearch from '../ProductSearch/productSearch.js';
 import CartTable from '../CartTable/cartTable.js';
 import ActionButtons from '../ActionButtons/actionButtons.js';
-import CancelSaleConfirmation from '../Forms/cancelSaleConfirmationForm.js'; // Make sure this import is correct
+import CancelSaleConfirmation from '../Forms/cancelSaleConfirmationForm.js';
 import CheckoutForm from '../Forms/checkOutForm.js';
 
 

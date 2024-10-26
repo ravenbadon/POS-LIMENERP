@@ -11,18 +11,21 @@ app.use(express.json());
 const db = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "R00tp@ssword",
+    password: "R00tp@ssword", //local MySQL password
     database: "limenerp",
     port: 3307
 })
 
 db.connect((err) => {
     if (err) {
-        console.error("Error connecting to the database:", err);
+        console.error("Error connecting to the database:", err.message);
+        console.error("Error code:", err.code);
+        console.error("SQL State:", err.sqlState);
         return;
     }
     console.log("Connected to the MySQL database.");
 });
+
 
 app.post('/login', (req, res) => {
     const { userName, userPassword } = req.body;
@@ -1767,6 +1770,39 @@ app.delete('/api/sales_transaction/:oRNo', (req, res) => {
         }
 
         res.status(200).json({ message: 'Sales transaction deleted successfully!' });
+    });
+});
+
+
+// Search Products by prodNo, prodName, prodBrand, prodSKU, or prodBarcode
+app.get('/api/products/search', (req, res) => {
+    const searchTerm = req.query.query;
+
+    if (!searchTerm) {
+        return res.status(400).json({ error: 'Search term is required' });
+    }
+
+    // SQL query to match the search term against multiple columns
+    const sql = `
+        SELECT * FROM product 
+        WHERE 
+            prodNo LIKE ? OR 
+            prodName LIKE ? OR 
+            prodBrand LIKE ? OR 
+            prodSKU LIKE ? OR 
+            prodBarcode LIKE ?
+    `;
+
+    // Use '%' to match any product containing the search term in any part of the field
+    const searchValue = `%${searchTerm}%`;
+
+    db.query(sql, [searchValue, searchValue, searchValue, searchValue, searchValue], (err, results) => {
+        if (err) {
+            console.error("Error fetching product data:", err);
+            return res.status(500).json({ error: 'Error fetching product data' });
+        }
+
+        res.json(results);
     });
 });
 
