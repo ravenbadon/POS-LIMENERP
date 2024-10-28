@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './customer.css';
 import AddCustomerForm from './addNewCustomer.js'; // Form to add a new customer
+import CustomerTable from './customerTable.js';
 
 const CustomerPage = () => {
   const [isAddCustomerFormOpen, setIsAddCustomerFormOpen] = useState(false);
@@ -27,8 +28,8 @@ const CustomerPage = () => {
         />
       </div>
       <div className="customer-list">
-        {/* Customer list or table will go here */}
-        {/* This could be implemented as another component, similar to CartTable */}
+        {/* Customer list or table */}
+        <CustomerTable />
       </div>
 
       {/* Add Customer Form */}
