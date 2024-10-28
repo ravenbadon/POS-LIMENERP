@@ -6,6 +6,7 @@ const { get } = require('http');
 
 const app = express()
 app.use(cors())
+app.use(express.json()); 
 
 const db = mysql.createConnection({
     host: "localhost",
@@ -26,6 +27,35 @@ app.get('/api/regular', (req, res)=> {
     })
 })
 
+// API to add a new regular customer 
+app.post('/api/regular/add', (req, res) => {
+    console.log('Request Body:', req.body);
+
+    const {
+        custLName,
+        custFName,
+        custMName,
+        custAddr,
+        custEmail,
+        custBalance
+    } = req.body;
+
+    if (!custLName || !custFName || !custMName || !custAddr || !custEmail || !custBalance) {
+        return res.status(400).json({ error: 'All fields are required' });
+    }
+
+    db.query(
+        'INSERT INTO regular (custLName, custFName, custMName, custAddr, custEmail, custBalance) VALUES (?, ?, ?, ?, ?, ?)',
+        [custLName, custFName, custMName, custAddr, custEmail, custBalance],
+        (error, results) => {
+            if (error) {
+                console.error('Database Error:', error);
+                return res.status(500).json({ error: 'Failed to add customer' });
+            }
+            res.status(201).json({ message: 'Customer added successfully' });
+        }
+    );
+});
 
 app.get('/api/product', (req, res)=> {
     const sql = "SELECT * FROM product";
@@ -66,4 +96,4 @@ app.get('/api/product/search', (req, res) => {
 
 app.listen(8082, ()=> {
     console.log("Server is listening on port 8082");
-})
+}) //port is 8082 instead of 8081

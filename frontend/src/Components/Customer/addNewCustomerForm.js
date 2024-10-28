@@ -5,27 +5,39 @@ const AddCustomerForm = ({ onClose }) => {
   const [firstName, setFirstName] = useState('');
   const [middleName, setMiddleName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [age, setAge] = useState('');
-  const [dob, setDob] = useState('');
-  const [gender, setGender] = useState('');
-  const [contactNo, setContactNo] = useState('');
   const [email, setEmail] = useState('');
   const [address, setAddress] = useState('');
 
-  const handleSaveCustomer = () => {
-    // Handle adding a new customer logic here
-    console.log('New Customer:', {
-      firstName,
-      middleName,
-      lastName,
-      age,
-      dob,
-      gender,
-      contactNo,
-      email,
-      address,
-    });
-    onClose();
+  const handleSaveCustomer = async () => {
+    // Create a new customer object
+    const newCustomer = {
+      custFName: firstName,
+      custMName: middleName,
+      custLName: lastName,
+      custEmail: email,
+      custAddr: address,
+      custBalance: 0.0, // Assuming initial balance is 0
+    };
+
+    try {
+      // Send a POST request to the backend API to save the new customer
+      const response = await fetch('http://localhost:8082/api/regular/add', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newCustomer),
+      });
+
+      if (response.ok) {
+        console.log('Customer added successfully');
+        onClose();
+      } else {
+        console.error('Error adding customer:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error adding customer:', error);
+    }
   };
 
   return (
@@ -57,42 +69,6 @@ const AddCustomerForm = ({ onClose }) => {
             type="text"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
-          />
-        </div>
-        <div className="form-row">
-          <label>Age:</label>
-          <input
-            type="number"
-            value={age}
-            onChange={(e) => setAge(e.target.value)}
-          />
-        </div>
-        <div className="form-row">
-          <label>Date of Birth:</label>
-          <input
-            type="date"
-            value={dob}
-            onChange={(e) => setDob(e.target.value)}
-          />
-        </div>
-        <div className="form-row">
-          <label>Gender:</label>
-          <select
-            value={gender}
-            onChange={(e) => setGender(e.target.value)}
-          >
-            <option value="">Select</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-        <div className="form-row">
-          <label>Contact No.:</label>
-          <input
-            type="text"
-            value={contactNo}
-            onChange={(e) => setContactNo(e.target.value)}
           />
         </div>
         <div className="form-row">
