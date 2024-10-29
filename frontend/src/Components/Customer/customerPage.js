@@ -21,10 +21,10 @@ const CustomerPage = () => {
     <div className="customer-page">
       <div className="customer-controls">
         <button className="add-customer-btn" onClick={handleAddCustomerClick}>Add Customer</button>
-        <input
+        <input //must be able to search customer names
           type="text"
           className="search-customer-input"
-          placeholder="Search customer"
+          placeholder="Search customer" 
         />
       </div>
       <div className="customer-list">

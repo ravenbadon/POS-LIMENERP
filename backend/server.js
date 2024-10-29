@@ -68,29 +68,28 @@ app.get('/api/product', (req, res)=> {
 app.get('/api/product/search', (req, res) => {
     const searchQuery = req.query.query;
 
-    if (!searchQuery) {
-        return res.status(400).json({ error: 'Query parameter is missing' });
+    let sql = 'SELECT * FROM product';
+    let values = [];
+
+    if (searchQuery) {
+        sql += `
+            WHERE prodName LIKE ?
+            OR prodBrand LIKE ?
+            OR prodSKU LIKE ?
+            OR prodBarcode LIKE ?
+        `;
+        values = [`%${searchQuery}%`, `%${searchQuery}%`, `%${searchQuery}%`, `%${searchQuery}%`];
     }
 
-    console.log("Search Query:", searchQuery); // Debugging Log
-
-    const sql = `
-        SELECT * FROM product 
-        WHERE prodName LIKE ?
-        OR prodBrand LIKE ?
-        OR prodSKU LIKE ?
-        OR prodBarcode LIKE ?
-    `;
-    
-    const values = [`%${searchQuery}%`, `%${searchQuery}%`, `%${searchQuery}%`, `%${searchQuery}%`];
-
-    connection.query(sql, values, (error, results) => {
+    db.query(sql, values, (error, results) => {
         if (error) {
-            return res.status(500).send(error);
+            console.error('Database Error:', error);
+            return res.status(500).json({ error: 'Failed to fetch products' });
         }
         res.json(results);
     });
 });
+
 
 
 
