@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './newCart.css';
+import '../ProductSearch/productSearch.css';
 import ProductSearch from '../ProductSearch/productSearch.js';
 import CartTable from '../CartTable/cartTable.js';
 import ActionButtons from '../ActionButtons/actionButtons.js';

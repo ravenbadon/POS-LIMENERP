@@ -7,6 +7,7 @@ const AddCustomerForm = ({ onClose }) => {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [address, setAddress] = useState('');
+  const [balance, setBalance] = useState('');
 
   const handleSaveCustomer = async () => {
     // Create a new customer object
@@ -16,7 +17,7 @@ const AddCustomerForm = ({ onClose }) => {
       custLName: lastName,
       custEmail: email,
       custAddr: address,
-      custBalance: 0.0, // Assuming initial balance is 0
+      custBalance: balance, // Assuming initial balance is 0
     };
 
     try {
@@ -85,6 +86,14 @@ const AddCustomerForm = ({ onClose }) => {
             type="text"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
+          />
+        </div>
+        <div className="form-row">
+          <label>Balance:</label>
+          <input
+            type="number"
+            value={balance}
+            onChange={(e) => setBalance(e.target.value)}
           />
         </div>
         <div className="form-actions">

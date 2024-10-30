@@ -1,11 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; //searchbar is working
 
 const ProductSearch = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [products, setProducts] = useState([]);
+    const [filteredProducts, setFilteredProducts] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const [debounceTimeout, setDebounceTimeout] = useState(null);
+    const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+
+    useEffect(() => {
+        // Fetch all products on initial load
+        const fetchAllProducts = async () => {
+            setIsLoading(true);
+            try {
+                const response = await fetch('http://localhost:8082/api/product');
+                if (response.ok) {
+                    const data = await response.json();
+                    setProducts(data);
+                } else {
+                    setError("Error fetching products: " + response.statusText);
+                }
+            } catch (error) {
+                setError("Error fetching products: " + error.message);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchAllProducts();
+    }, []);
 
     // Handle input change and debounce fetch products
     const handleInputChange = (event) => {
@@ -19,31 +42,24 @@ const ProductSearch = () => {
 
         // Set a new debounce timer
         setDebounceTimeout(setTimeout(() => {
-            fetchProducts(term);
+            filterProducts(term);
         }, 300)); // 300ms debounce delay
     };
 
-    // Fetch products based on the search term
-    const fetchProducts = async (term) => {
-        if (term.length > 0) {
-            setIsLoading(true);
-            setError(null);
-            try {
-                const response = await fetch(`http://localhost:8082/api/product/search?query=${term}`);
-                if (response.ok) {
-                    const data = await response.json();
-                    setProducts(data);
-                } else {
-                    setError("Error fetching products: " + response.statusText);
-                }
-            } catch (error) {
-                setError("Error fetching products: " + error.message);
-            } finally {
-                setIsLoading(false);
-            }
+    // Filter products based on search term
+    const filterProducts = (term) => {
+        if (term.length === 0) {
+            setFilteredProducts([]);
+            setIsDropdownVisible(false); // Hide dropdown when input is empty
         } else {
-            setProducts([]); // Clear the results when search term is empty
-            setIsLoading(false);
+            const filtered = products.filter(product =>
+                product.prodName.toLowerCase().includes(term.toLowerCase()) ||
+                product.prodBrand.toLowerCase().includes(term.toLowerCase()) ||
+                product.prodSKU.toLowerCase().includes(term.toLowerCase()) ||
+                product.prodBarcode.toLowerCase().includes(term.toLowerCase())
+            );
+            setFilteredProducts(filtered);
+            setIsDropdownVisible(filtered.length > 0); // Show dropdown only if there are matches
         }
     };
 
@@ -54,17 +70,21 @@ const ProductSearch = () => {
                 value={searchTerm}
                 onChange={handleInputChange}
                 placeholder="Search for products"
+                onFocus={() => filteredProducts.length > 0 && setIsDropdownVisible(true)}
+                onBlur={() => setTimeout(() => setIsDropdownVisible(false), 200)}
             />
             {isLoading && <p>Loading...</p>}
             {error && <p className="error">{error}</p>}
-            {products.length > 0 && (
-                <ul className="product-list">
-                    {products.map((product) => (
-                        <li key={product.prodNo}>
-                            {product.prodName} - {product.prodBrand} - {product.prodSKU}
-                        </li>
-                    ))}
-                </ul>
+            {isDropdownVisible && (
+                <div className="dropdown-container">
+                    <ul className="product-list">
+                        {filteredProducts.map((product) => (
+                            <li key={product.prodNo} onClick={() => setSearchTerm(product.prodName)}>
+                                {product.prodBarcode} | {product.prodName} | {product.prodBrand} | {product.prodSKU}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
             )}
         </div>
     );

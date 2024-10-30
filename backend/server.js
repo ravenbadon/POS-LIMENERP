@@ -65,26 +65,25 @@ app.get('/api/product', (req, res)=> {
     })
 })
 
-app.get('/api/product/search', (req, res) => {
-    const searchQuery = req.query.query;
+app.get('/api/products/search', (req, res) => {
+    const query = req.query.query;
 
-    let sql = 'SELECT * FROM product';
-    let values = [];
-
-    if (searchQuery) {
-        sql += `
-            WHERE prodName LIKE ?
-            OR prodBrand LIKE ?
-            OR prodSKU LIKE ?
-            OR prodBarcode LIKE ?
-        `;
-        values = [`%${searchQuery}%`, `%${searchQuery}%`, `%${searchQuery}%`, `%${searchQuery}%`];
+    if (!query) {
+        return res.status(400).json({ message: 'Query parameter is required.' });
     }
 
-    db.query(sql, values, (error, results) => {
-        if (error) {
-            console.error('Database Error:', error);
-            return res.status(500).json({ error: 'Failed to fetch products' });
+    const sql = `
+        SELECT prodNo, prodName
+        FROM product
+        WHERE prodNo LIKE ? OR prodName LIKE ?
+    `;
+
+    const searchTerm = `%${query}%`;
+
+    db.query(sql, [searchTerm, searchTerm], (err, results) => {
+        if (err) {
+            console.error('Error fetching products:', err);
+            return res.status(500).json({ message: 'Internal server error.' });
         }
         res.json(results);
     });
