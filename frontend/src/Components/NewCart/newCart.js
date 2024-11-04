@@ -7,10 +7,15 @@ import ActionButtons from '../ActionButtons/actionButtons.js';
 import CancelSaleConfirmation from '../Forms/cancelSaleConfirmationForm.js';
 import CheckoutForm from '../Forms/checkOutForm.js';
 
-
 const NewCart = ({ onDiscountClick }) => {
   const [isCheckoutFormOpen, setIsCheckoutFormOpen] = useState(false);
   const [isCancelConfirmationOpen, setIsCancelConfirmationOpen] = useState(false);
+  const [cartItems, setCartItems] = useState([]); // State to store items added to the cart
+
+  // Handle adding a product to the cart
+  const handleAddToCart = (product) => {
+    setCartItems((prevItems) => [...prevItems, product]);
+  };
 
   // Handle send button click to open checkout form
   const handleSendClick = () => {
@@ -29,7 +34,6 @@ const NewCart = ({ onDiscountClick }) => {
 
   // Handle confirm cancel sale action
   const handleConfirmCancel = () => {
-    // Perform cancel sale action here
     console.log('Sale has been cancelled');
     setIsCancelConfirmationOpen(false);
   };
@@ -43,14 +47,14 @@ const NewCart = ({ onDiscountClick }) => {
     <div className="new-cart">
       {/* Product Search and Navigation */}
       <div className="product-search">
-        <ProductSearch />
+        <ProductSearch onAddToCart={handleAddToCart} /> {/* Pass handleAddToCart to ProductSearch */}
         <button className="send-button" onClick={handleSendClick}>
           Send
         </button>
       </div>
-      
+
       {/* CartTable to display product details */}
-      <CartTable />
+      <CartTable cartItems={cartItems} /> {/* Pass cartItems to CartTable */}
 
       {/* Action Buttons with cancel sale action */}
       <ActionButtons handleCancelClick={handleCancelClick} />

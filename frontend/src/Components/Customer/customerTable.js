@@ -18,7 +18,7 @@ const CustomerTable = () => {
           const data = await response.json();
           // Map each customer to add an `id` field using `custNo`
           const customersWithId = data.map((customer) => ({
-            id: customer.custNo, // Use `custNo` as a unique id for DataGrid
+            id: customer.custNo,
             custLName: customer.custLName,
             custFName: customer.custFName,
             custAddr: customer.custAddr,
